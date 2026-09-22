@@ -16,8 +16,8 @@ CFET2 的 HTTP 通信模块。它将 HTTP 请求映射为本地 `Hub` 资源访�
 安装依赖：
 
 ```powershell
-dotnet add package CFET2Core --version 3.0.0
-dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.0.0
+dotnet add package CFET2Core --version 3.1.0
+dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.0.1
 ```
 
 注册并启动模块：
