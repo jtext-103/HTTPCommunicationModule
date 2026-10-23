@@ -1,4 +1,4 @@
-﻿using Jtext103.CFET2.Core.Communication;
+using Jtext103.CFET2.Core.Communication;
 using Jtext103.CFET2.Core.Sample;
 
 namespace Jtext103.CFET2.HTTPCommunicationModule
@@ -28,12 +28,7 @@ namespace Jtext103.CFET2.HTTPCommunicationModule
                 throw new ObjectDisposedException(nameof(HTTPCommunicationModule));
             }
 
-            if (server != null)
-            {
-                return;
-            }
-
-            server = new HTTPServer(uri, MyHub);
+            server ??= new HTTPServer(uri, MyHub);
             server.Start();
         }
 

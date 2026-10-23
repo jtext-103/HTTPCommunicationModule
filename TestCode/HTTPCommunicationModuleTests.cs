@@ -18,6 +18,7 @@ public sealed class HTTPCommunicationModuleTests : CFET2Host
     private string baseUrl = "";
     private string? webUiRoot;
     private string? previousWebUiRoot;
+    private static readonly DateTimeOffset SourceTime = new DateTimeOffset(2026, 9, 24, 12, 30, 0, TimeSpan.FromHours(8)).AddTicks(1234567);
 
     [TestInitialize]
     public void Init()
@@ -59,6 +60,22 @@ public sealed class HTTPCommunicationModuleTests : CFET2Host
     {
         CollectionAssert.Contains(module!.ProtocolNames, "http");
         CollectionAssert.DoesNotContain(module.ProtocolNames, "https");
+    }
+
+    [TestMethod]
+    [DataRow("JSON")]
+    [DataRow("MessagePack")]
+    public void Timestamp_ShouldSurviveRemoteSampleRoundTrip(string format)
+    {
+        using var reader = new HTTPCommunicationModule(new Uri(baseUrl), format);
+        var sample = reader.TryGetResourceSampleWithUri($"{baseUrl}/thing/TimestampedValue", Array.Empty<object>());
+        Assert.AreEqual(42, sample.GetVal<int>());
+        Assert.AreEqual(SourceTime, sample.Timestamp);
+        Assert.AreEqual(TimeSpan.Zero, sample.Timestamp!.Value.Offset);
+        Assert.IsTrue(sample.IsRemote);
+
+        var legacy = reader.TryGetResourceSampleWithUri($"{baseUrl}/thing/StatusValue", Array.Empty<object>());
+        Assert.IsNull(legacy.Timestamp);
     }
 
     [TestMethod]
@@ -305,6 +322,9 @@ public sealed class HTTPCommunicationModuleTests : CFET2Host
 
     private sealed class HttpTestThing : Thing
     {
+        [Cfet2Status]
+        public Status<int> TimestampedValue => new Status<int>(42) { Timestamp = SourceTime };
+
         [Cfet2Status]
         public int StatusValue => 10;
 

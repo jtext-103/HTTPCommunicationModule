@@ -317,7 +317,7 @@ Client 规则：
 1. 如果 array/dictionary 为空，只发送 URI，不发送 body。
 2. 如果 `inputs` 非空，发送 `usingInputDict=false` 和 `inputArray`。
 3. 如果 `inputDict` 非空，发送 `usingInputDict=true` 和 `inputDict`。
-4. `GET` 请求如需携带显式输入，优先使用 body 不够通用；推荐第一版将 array/dict 输入编码到 query 或改用 `X-CFET2-Input` header/body，并在 Server 端兼容。更稳妥的工程选择是：`GET` 支持 URI/query 参数；复杂 GET 输入作为暂不支持边界，返回明确错误。
+4. 当前 Client 对 GET/POST/PUT 的非空显式 array/dictionary 输入统一发送 JSON 信封 body，Server 按同一协议解析；GET 显式输入并非未实现。无显式输入时仍使用 URI path/query。GET body 的代理和第三方客户端兼容性需按部署环境验证；旧 Nancy Server 不解析该 body，访问旧服务仍须使用 URI 参数。
 
 Server 规则：
 
