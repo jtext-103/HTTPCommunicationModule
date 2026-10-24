@@ -16,8 +16,8 @@ CFET2 的 HTTP 通信模块。它将 HTTP 请求映射为本地 `Hub` 资源访�
 安装依赖：
 
 ```powershell
-dotnet add package CFET2Core --version 3.1.0
-dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.0.1
+dotnet add package CFET2Core --version 3.2.0
+dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.0.2
 ```
 
 注册并启动模块：
@@ -40,3 +40,9 @@ host.MyHub.StartCommunication();
 ## 文档
 
 - [实现说明与测试边界](Doc/HTTPCM实现说明与测试边界.md)
+
+## 构建与发布
+
+当前 `.gitlab-ci.yml` 在默认分支执行版本更新、Release 测试、构建和打包，并在 publish 阶段推送 NuGet。Core、HTTP、WebSocket、MQTT 按此顺序处理依赖，先确认所需 Core 包可还原，再更新下游固定包版本。
+
+提交说明末尾的 `-a` 升主版本并清零次版本和修订号，`-b` 升次版本并清零修订号；没有这两个末尾标记时升修订号。独立的 `-notest` 标记跳过测试，但仍执行构建、打包和发布；组合示例为 `发布更新 -notest -b`。CI 默认遍历仓库内测试项目，执行 `dotnet test --configuration Release`；没有配置真实 Broker 开关和工具时，不能将流水线通过视为 MQTT 网络集成验证通过。

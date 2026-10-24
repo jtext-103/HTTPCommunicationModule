@@ -2,7 +2,7 @@
 
 ## 目标
 
-本文档说明 `HTTPCommunicationModule` 需要基于新版 CFETCore 实现的 HTTP Communication Module 能力。当前阶段只分析和定义 HTTPCM，即远程资源访问链路。
+本文档说明 `HTTPCommunicationModule` 需要基于新版 CFETCore 实现的 HTTP Communication Module 能力。当前 HTTP 资源访问链路已实现；项目版本为 1.0.2，固定依赖 Core 3.2.0，目标框架为 net10.0。下文设计要求与历史验证记录保留原阶段含义，当前边界以实现及对应测试为准。
 
 HTTPCM 的核心目标是：
 
@@ -687,3 +687,7 @@ MessagePack 兼容需要验证：
 6. 默认支持浏览器跨域访问，并正确处理 CORS 预检请求。
 7. 支持 Web UI 静态文件服务和浏览器 hash redirect。
 8. 测试覆盖 Server 入站、Client 出站、参数解析、序列化、错误边界、CORS 边界、Web UI redirect 边界和新旧 HTTP CM 互通边界。
+
+## 当前验证入口（2026-10-23）
+
+从本仓库目录运行 `dotnet test TestCode/TestCode.csproj -c Release`，测试构建当前 HTTP 源码并还原固定的 Core NuGet 依赖。非法 JSON body 返回 500 的既有边界仍由 `InvalidJsonBody_CurrentlyReturnsInternalServerError` 覆盖；不应将该行为描述为已修复。CI 与包安装版本见 [README](../README.md)。本次仅同步文档，未产生新的测试通过记录。
