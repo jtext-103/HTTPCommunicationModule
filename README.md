@@ -1,5 +1,10 @@
 # CFET2 HTTP Communication Module
 
+## Cfet2NoEvent
+
+HTTP JSON/MessagePack 资源响应始终携带资源目录确定的 `NoEvent` 字段，不依赖 `ResourceInfoMidware`。读取、写入行为保持正常。新 Core 的远程 `SubscribeResource` 允许一次 GET，然后在 `NoEvent=true` 时返回 `Skipped`，不注册事件，不启动轮询。
+
+
 CFET2 的 HTTP 通信模块。它将 HTTP 请求映射为本地 `Hub` 资源访问，也让 CFET2 节点通过 `http://` URI 访问远程资源。
 
 ## 功能
@@ -16,8 +21,8 @@ CFET2 的 HTTP 通信模块。它将 HTTP 请求映射为本地 `Hub` 资源访�
 安装依赖：
 
 ```powershell
-dotnet add package CFET2Core --version 3.2.0
-dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.0.2
+dotnet add package CFET2Core --version 3.3.0
+dotnet add package Jtext103.CFET2.HTTPCommunicationModule --version 1.1.0
 ```
 
 注册并启动模块：

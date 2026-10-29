@@ -226,7 +226,12 @@ namespace Jtext103.CFET2.HTTPCommunicationModule
 
             try
             {
+                // Capture the directory entry before middleware can rewrite the request or sample path.
+                var resourcePath = hub.ParseLocalRequest(new Uri(resourceReq.RequestUri, UriKind.RelativeOrAbsolute)).ResourcePath;
+                var noEvent = hub.GetLocalResouce(resourcePath)?.NoEvent ?? false;
                 result = hub.TryAccessResourceSampleWithUri(resourceReq);
+                // Resource-owned metadata is available even without ResourceInfoMidware.
+                result.Context["NoEvent"] = noEvent;
             }
             catch (ResourceDoesNotExistException)
             {

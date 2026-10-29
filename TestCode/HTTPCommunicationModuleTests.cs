@@ -11,7 +11,7 @@ using System.Text;
 namespace TestCode;
 
 [TestClass]
-public sealed class HTTPCommunicationModuleTests : CFET2Host
+public sealed partial class HTTPCommunicationModuleTests : CFET2Host
 {
     private HTTPCommunicationModule? module;
     private HttpClient? client;
